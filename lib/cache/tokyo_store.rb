@@ -56,18 +56,10 @@ module ActiveSupport
       end
 
       def read(key, options = nil) # :nodoc:
-        # TODO: benchmark [key] vs .get(key)
         super
-        return nil unless val = @data[key]
-        val = Marshal.load(val) unless raw?(options)
-        val
-        # if str = @data.get(key)
-        #   Marshal.load str
-        #   else
-        #   STDERR.printf("get error: %s\n", @data.errmsg(@data.ecode))
-        #   end
-        # logger.error("TokyoError (#{e}): #{e.message}")
-        # nil
+        val = @data[key]
+        return nil unless val
+        raw?(options) ? val : Marshal.load(val)
       end
 
       # Writes a value to the cache.
